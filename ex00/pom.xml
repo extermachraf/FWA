@@ -94,6 +94,13 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.9</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -130,7 +137,9 @@
                     <configuration>
                         <properties>
                             <cargo.servlet.port>4000</cargo.servlet.port>
-                            <cargo.logging>high</cargo.logging>
+                            <cargo.jvmargs>
+                                -Djava.util.logging.config.file=${project.basedir}/src/main/resources/logging.properties
+                            </cargo.jvmargs>
                         </properties>
                     </configuration>
                     <deployables>
@@ -139,7 +148,7 @@
                             <artifactId>${project.artifactId}</artifactId>
                             <type>war</type>
                             <properties>
-                                <context>/</context>
+                                <context>/cineam</context>
                             </properties>
                         </deployable>
                     </deployables>
