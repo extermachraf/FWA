@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+// private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
 
