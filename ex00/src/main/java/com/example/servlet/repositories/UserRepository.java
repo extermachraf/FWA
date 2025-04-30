@@ -1,16 +1,15 @@
 package com.example.servlet.repositories;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.example.servlet.config.DatabaseConfig;
 import com.example.servlet.models.User;
 
 @Repository
-@Import(DatabaseConfig.class)
 public class UserRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -20,11 +19,21 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = :email";
+        try {
+            return jdbcTemplate.queryForObject(sql,
+                    new MapSqlParameterSource("email", email),
+                    BeanPropertyRowMapper.newInstance(User.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     public boolean existsByEmail(String email) {
         String sql = "SELECT COUNT(*) FROM users WHERE email = :email";
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("email", email);
-        Integer count = jdbcTemplate.queryForObject(sql, params, Integer.class);
+        Integer count = jdbcTemplate.queryForObject(sql,
+                new MapSqlParameterSource("email", email), Integer.class);
         return count != null && count > 0;
     }
 
