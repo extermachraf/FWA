@@ -120,29 +120,24 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>December 10, 2020</td>
-            <td>05:00</td>
-            <td>127.0.0.1</td>
-          </tr>
-          <tr>
-            <td>December 09, 2020</td>
-            <td>04:00</td>
-            <td>127.0.0.1</td>
-          </tr>
-          <tr>
-            <td>December 08, 2020</td>
-            <td>03:00</td>
-            <td>127.0.0.1</td>
-          </tr>
-          <tr>
-            <td>December 05, 2020</td>
-            <td>02:00</td>
-            <td>127.0.0.1</td>
-          </tr>
+          <c:choose>
+            <c:when test="${empty authHistory}">
+              <tr>
+                <td colspan="3">No authentication history available</td>
+              </tr>
+            </c:when>
+            <c:otherwise>
+              <c:forEach var="authEvent" items="${authHistory}">
+                <tr>
+                  <td>${authEvent.formattedDate}</td>
+                  <td>${authEvent.formattedTime}</td>
+                  <td>${authEvent.ipAddress}</td>
+                </tr>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
         </tbody>
       </table>
-
       <!-- Uploaded Files Table -->
       <h2>Uploaded Files</h2>
       <table>
