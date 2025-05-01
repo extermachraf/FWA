@@ -2,14 +2,17 @@ package com.example.servlet.controller;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.servlet.models.User;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 // private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 @WebServlet("/profile")
@@ -27,6 +30,8 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
+        User user = (User) session.getAttribute("user");
+        req.setAttribute("user", user);
         logger.info("Forwarding to profile.jsp");
         req.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(req, resp);
     }

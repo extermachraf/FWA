@@ -80,19 +80,19 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           <table class="user-details">
             <tr>
               <td><strong>First Name:</strong></td>
-              <td>John</td>
+              <td>${user.first_name}</td>
             </tr>
             <tr>
               <td><strong>Last Name:</strong></td>
-              <td>Doe</td>
+              <td>${user.last_name}</td>
             </tr>
             <tr>
               <td><strong>Email:</strong></td>
-              <td>java@senior.lol</td>
+              <td>${user.email}</td>
             </tr>
             <tr>
               <td><strong>Phone:</strong></td>
-              <td>+1 234 567 8900</td>
+              <td>+${user.phone_number}</td>
             </tr>
           </table>
 
