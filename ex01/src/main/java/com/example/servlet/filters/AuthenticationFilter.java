@@ -36,7 +36,10 @@ public class AuthenticationFilter implements Filter {
             HttpSession session = httpRequest.getSession(false);
             if (session == null || session.getAttribute("user") == null) {
                 logger.info("Unauthorized access attempt to {}, redirecting to signin", relativePath);
-                httpResponse.sendRedirect(contextPath + "/signin");
+                // Return 403 Forbidden response
+                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
+                httpResponse.setContentType("application/json");
+                httpResponse.getWriter().write("{\"error\": \"Access denied\"}");
                 return;
             }
             logger.info("Authenticated user accessing {}", relativePath);
