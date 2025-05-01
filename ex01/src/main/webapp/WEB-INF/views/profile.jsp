@@ -77,7 +77,24 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
         </div>
         <div class="user-info">
           <h1>It's Me</h1>
-          <p>java@senior.lol</p>
+          <table class="user-details">
+            <tr>
+              <td><strong>First Name:</strong></td>
+              <td>John</td>
+            </tr>
+            <tr>
+              <td><strong>Last Name:</strong></td>
+              <td>Doe</td>
+            </tr>
+            <tr>
+              <td><strong>Email:</strong></td>
+              <td>java@senior.lol</td>
+            </tr>
+            <tr>
+              <td><strong>Phone:</strong></td>
+              <td>+1 234 567 8900</td>
+            </tr>
+          </table>
 
           <div class="upload-form">
             <form
