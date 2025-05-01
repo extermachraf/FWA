@@ -149,28 +149,28 @@ pageEncoding="UTF-8"%> <%@ taglib prefix="c" uri="jakarta.tags.core" %>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <a
-                href="${pageContext.request.contextPath}/images/avatar.jpg"
-                target="_blank"
-                >avatar.jpg</a
-              >
-            </td>
-            <td>195KB</td>
-            <td>image/jpg</td>
-          </tr>
-          <tr>
-            <td>
-              <a
-                href="${pageContext.request.contextPath}/images/image.png"
-                target="_blank"
-                >image.png</a
-              >
-            </td>
-            <td>1MB</td>
-            <td>image/png</td>
-          </tr>
+          <c:choose>
+            <c:when test="${empty userFiles}">
+              <tr>
+                <td colspan="3">No files uploaded yet</td>
+              </tr>
+            </c:when>
+            <c:otherwise>
+              <c:forEach var="file" items="${userFiles}">
+                <tr>
+                  <td>
+                    <a
+                      href="${pageContext.request.contextPath}/images/${file.storedFilename}"
+                      target="_blank"
+                      >${file.originalFilename}</a
+                    >
+                  </td>
+                  <td>${file.formattedSize}</td>
+                  <td>${file.mimeType}</td>
+                </tr>
+              </c:forEach>
+            </c:otherwise>
+          </c:choose>
         </tbody>
       </table>
     </div>

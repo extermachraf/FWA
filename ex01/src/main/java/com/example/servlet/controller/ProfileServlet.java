@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
 import com.example.servlet.models.AuthEvent;
+import com.example.servlet.models.UploadedFile;
 import com.example.servlet.models.User;
 import com.example.servlet.services.AuthEventService;
+import com.example.servlet.services.FileStorageService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,6 +27,7 @@ public class ProfileServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(ProfileServlet.class);
     private AuthEventService authEventService;
+    private FileStorageService fileStorageService;
 
     @Override
     public void init() throws ServletException {
@@ -32,6 +35,7 @@ public class ProfileServlet extends HttpServlet {
         if (springContext != null) {
             try {
                 this.authEventService = springContext.getBean(AuthEventService.class);
+                this.fileStorageService = springContext.getBean(FileStorageService.class);
                 logger.info("AuthEventService successfully initialized");
             } catch (Exception e) {
                 logger.error("Failed to get AuthEventService bean: {}", e.getMessage());
@@ -68,6 +72,18 @@ public class ProfileServlet extends HttpServlet {
             logger.warn("AuthEventService is null, cannot load authentication history");
         }
         req.setAttribute("authHistory", authHistory);
+
+        // Load user's uploaded files
+        List<UploadedFile> userFiles = Collections.emptyList();
+        if (fileStorageService != null) {
+            try {
+                userFiles = fileStorageService.getUserFiles(user.getId());
+                logger.info("Loaded {} files for user ID: {}", userFiles.size(), user.getId());
+            } catch (Exception e) {
+                logger.error("Error loading user files: {}", e.getMessage());
+            }
+        }
+        req.setAttribute("userFiles", userFiles);
 
         logger.info("Loaded {} authentication events for user ID: {}", authHistory.size(), user.getId());
         logger.info("Forwarding to profile.jsp");
