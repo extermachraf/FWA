@@ -8,10 +8,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProfileServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -23,7 +27,7 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
-        resp.setContentType("text/html");
-        resp.getWriter().write("<html><body><h1>Welcome to your profile!</h1></body></html>");
+        logger.info("Forwarding to profile.jsp");
+        req.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(req, resp);
     }
 }
