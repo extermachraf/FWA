@@ -10,13 +10,15 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest; 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebFilter("/*")
 public class AuthenticationFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
-    private static final String[] PUBLIC_URLS = {"/signIn", "/signUp"};
+    // Fix the paths to match your actual servlet mappings (lowercase)
+    private static final String[] PUBLIC_URLS = {"/signin", "/signup", "/hello", ""};
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -24,22 +26,38 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String path = httpRequest.getRequestURI();
-        logger.info("this si the path = {} ", 
-                path);
+        String contextPath = httpRequest.getContextPath();
+        String relativePath = path.substring(contextPath.length());
+        
+        logger.info("Request path: {}", relativePath);
+
+        // Check if this is a protected path that requires authentication
+        if (!isPublicPath(relativePath)) {
+            HttpSession session = httpRequest.getSession(false);
+            if (session == null || session.getAttribute("user") == null) {
+                logger.info("Unauthorized access attempt to {}, redirecting to signin", relativePath);
+                httpResponse.sendRedirect(contextPath + "/signin");
+                return;
+            }
+            logger.info("Authenticated user accessing {}", relativePath);
+        } else {
+            logger.info("Public path access: {}", relativePath);
+        }
 
         chain.doFilter(request, response);
-
         logger.info("Outgoing response: Status={}", httpResponse.getStatus());
-        // if(isPublicPath(path)){
-            
-        // }
     }
 
-
     public boolean isPublicPath(String path) {
+        // Handle root path
+        if (path.equals("/")) {
+            return true;
+        }
+        
         for(String url : PUBLIC_URLS) {
-            if(url.equals(path))
+            if(path.equals(url)) {
                 return true;
+            }
         }
         return false;
     }
