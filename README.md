@@ -137,8 +137,6 @@ fwa/
             └── webapp/
 ```
 
-![Application Screenshot](https://via.placeholder.com/800x400?text=Application+Screenshot)
-
 ## 🔗 Additional Resources
 
 - [Jakarta EE Documentation](https://jakarta.ee/specifications/servlet/)
