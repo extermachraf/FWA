@@ -15,8 +15,6 @@ The application consists of two modules:
 - **ex00**: Basic authentication and user management
 - **ex01**: Enhanced version with file upload and authentication history tracking
 
-![Application Architecture](https://via.placeholder.com/800x400?text=Application+Architecture)
-
 ## 🚀 Features
 
 - **User Management**
