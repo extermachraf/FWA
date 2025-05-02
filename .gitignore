@@ -47,10 +47,6 @@ Thumbs.db
 *.log
 logs/
 /tmp/
-.env
 
 # Docker
 docker-compose.override.yml
-
-# Custom files
-commit.txt
